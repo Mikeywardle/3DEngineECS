@@ -1,0 +1,10 @@
+<Shaders>
+  <Shader>
+    <name>basicFragment</name>
+    <file>spriteFragmentShader.fs</file>
+  </Shader>
+  <Shader>
+    <name>basicVertex</name>
+    <file>spriteVertexShader.vs</file>
+  </Shader>
+</Shaders>

@@ -2,9 +2,11 @@
   <Shader>
     <name>basicFragment</name>
     <file>spriteFragmentShader.fs</file>
+    <type>fragment</type>
   </Shader>
   <Shader>
     <name>basicVertex</name>
     <file>spriteVertexShader.vs</file>
+    <type>vertex</type>
   </Shader>
 </Shaders>

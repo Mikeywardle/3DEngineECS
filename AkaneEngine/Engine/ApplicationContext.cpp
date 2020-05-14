@@ -100,8 +100,7 @@ int ApplicationContext::Run()
 	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
 	mesh->transform.SetPositionRotationScale(glm::vec3(4,0,0), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
 
-	mesh->texture = ResourceManager::GetTexture("crate");
-	mesh->shader = ResourceManager::LoadShader("resources/Shaders/spriteVertexShader.vs", "resources/Shaders/spriteFragmentShader.fs", nullptr, "sprite");
+	mesh->material = ResourceManager::GetMaterial("Test");
 
 	while (!glfwWindowShouldClose(window))
 	{

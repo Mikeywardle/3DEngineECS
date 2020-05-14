@@ -30,6 +30,8 @@
   <ItemGroup>
     <None Include="Resources\Shaders\spriteFragmentShader.fs" />
     <None Include="Resources\Shaders\spriteVertexShader.vs" />
+    <None Include="Resources\Materials\Test.material" />
+    <None Include="Resources\Materials\Example.material" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\container.jpg">

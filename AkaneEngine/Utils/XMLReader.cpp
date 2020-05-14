@@ -1,5 +1,9 @@
 #include "XMLReader.h"
 
+#include <rapidxml-1.13/rapidxml_iterators.hpp>
+#include <rapidxml-1.13/rapidxml_print.hpp>
+#include <rapidxml-1.13/rapidxml_utils.hpp>
+
 xml_document<>* XMLReader::parseXml(std::string filePath)
 {
 	xml_document<>* doc = new xml_document<>();

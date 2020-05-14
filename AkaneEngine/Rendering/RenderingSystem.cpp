@@ -20,15 +20,15 @@ void RenderingSystem::OnFrame()
 
 	for (StaticMesh mesh : staticMeshes) 
 	{
-		mesh.shader->Use();
 		mesh.shader->SetMatrix4("projection", projection);
 		mesh.shader->SetMatrix4("view", view);
 
-		glActiveTexture(GL_TEXTURE0);
-		mesh.texture->Bind();
-
-		mesh.shader->SetVector4f("colour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		glUseProgram(mesh.materialID);
 		mesh.shader->SetMatrix4("model", mesh.transform.GetModelMatrix());
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, ID);
+
 		glBindVertexArray(mesh.vao);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
@@ -36,6 +36,6 @@ void RenderingSystem::OnFrame()
 
 StaticMesh* RenderingSystem::AddStaticMesh()
 {
-	staticMeshes.resize(1);
-	return new(&staticMeshes[0]) StaticMesh();
+	staticMeshes.resize(staticMeshes.size+1);
+	return new(&staticMeshes[staticMeshes.size-1]) StaticMesh();
 }

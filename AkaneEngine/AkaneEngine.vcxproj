@@ -188,6 +188,7 @@
     <ClInclude Include="Input\InputTypes.h" />
     <ClInclude Include="Maths\Vector3.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Rendering\Color.h" />
     <ClInclude Include="Rendering\Material.h" />
     <ClInclude Include="Rendering\RenderingSystem.h" />
     <ClInclude Include="Rendering\Camera.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Rendering\Texture2D.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestLevel2.h" />
+    <ClInclude Include="Utils\XMLParsing.h" />
     <ClInclude Include="Utils\XMLReader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +220,7 @@
     <ClCompile Include="Input\InputReceiver.cpp" />
     <ClCompile Include="Maths\Vector3.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Rendering\Color.cpp" />
     <ClCompile Include="Rendering\Material.cpp" />
     <ClCompile Include="Rendering\RenderingSystem.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />

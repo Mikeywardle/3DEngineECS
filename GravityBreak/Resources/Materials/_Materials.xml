@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Materials>
   <Material>
     <name>Test</name>
-    <file>Test.mat</file>
-    <initData>
-      <floats></floats>
-      <ints></ints>
-      <colors></colors>
-      <textures></textures>
-    </initData>
+    <file>Test.material</file>
   </Material>
 </Materials>

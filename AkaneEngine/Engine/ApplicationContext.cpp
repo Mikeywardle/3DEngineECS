@@ -63,6 +63,7 @@ bool ApplicationContext::intialiseWindow()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
+	glEnable(GL_DEPTH_TEST);
 	return true;
 }
 

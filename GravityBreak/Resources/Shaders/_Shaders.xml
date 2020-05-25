@@ -9,4 +9,9 @@
     <file>spriteVertexShader.vs</file>
     <type>vertex</type>
   </Shader>
+  <Shader>
+    <name>gradientFragment</name>
+    <file>GradientFragment.fs</file>
+    <type>fragment</type>
+  </Shader>
 </Shaders>

@@ -7,6 +7,10 @@ Color Color::Blue = Color(0.f, 0.f, 1.f, 1.f);
 Color Color::Green = Color(0.f, 1.f, 0.f, 1.f);
 Color Color::Clear = Color(0.f, 0.f, 0.f, 0.f);
 
+Color::Color()
+{
+}
+
 Color::Color(float r, float g, float b, float a)
 {
 	this->r = r;

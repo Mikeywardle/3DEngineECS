@@ -5,6 +5,7 @@
 #include "Texture2D.h"
 #include "Material.h"
 #include "../ECS/Component.h"
+#include <string>
 
 struct AKANEENGINE_API StaticMesh :Component
 {
@@ -13,8 +14,7 @@ public:
 
 	GLuint vao;
 	GLuint gIndirectBuffer;
-	GLuint materialID;
-
 	Transform transform;
+	std::string material;
 };
 

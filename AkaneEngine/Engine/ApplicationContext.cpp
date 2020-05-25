@@ -28,7 +28,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 void ApplicationContext::Initialize()
 {
 	initialized = true;
-	game.SwitchLevel<TestLevel>();
+	//game.SwitchLevel<TestLevel>();
 }
 
 bool ApplicationContext::intialiseWindow()
@@ -98,12 +98,20 @@ int ApplicationContext::Run()
 	camera.transform.SetPositionRotation(glm::vec3(0, 0, 0), glm::quat(0, 0, 0, 0));
 
 	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
-	mesh->transform.SetPositionRotationScale(glm::vec3(4,0,0), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
+	mesh->transform.SetPositionRotationScale(glm::vec3(4,-1,-1), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
+	mesh->material = "Test";
 
-	mesh->material = ResourceManager::GetMaterial("Test");
+	StaticMesh* mesh2 = RenderingSystem::instance->AddStaticMesh();
+	mesh2->transform.SetPositionRotationScale(glm::vec3(4, 1, -1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
+	mesh2->material = "Test2";
+
+	StaticMesh* mesh3 = RenderingSystem::instance->AddStaticMesh();
+	mesh3->transform.SetPositionRotationScale(glm::vec3(4, 1, 1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
+	mesh3->material = "Gradient";
 
 	while (!glfwWindowShouldClose(window))
 	{
+		cout << 1.0f/GameTime::deltaTime << endl;
 		inputModule.PollInputs();
 		game.DoFrame(GameTime::deltaTime);
 		game.DrawFrame();

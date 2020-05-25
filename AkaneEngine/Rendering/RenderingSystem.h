@@ -17,5 +17,8 @@ public:
 
 private:
 	std::vector<StaticMesh> staticMeshes;
+
+	void BindTextures(Material* material);
+	void SetCameraMatrices();
 };
 

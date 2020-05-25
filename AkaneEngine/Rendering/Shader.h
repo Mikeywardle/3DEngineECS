@@ -13,14 +13,9 @@ class AKANEENGINE_API Shader {
 public:
 
 	GLuint ID;
-
-	Shader() { }
-
-	void Use();
-
-	void    Compile(const GLchar* shaderSource, int shaderType); // Note: geometry source code is optional 
+	Shader(const GLchar* shaderSource, int shaderType);
 
 private:
-	void    checkCompileErrors(GLuint object, std::string type);
+	void checkCompileErrors(GLuint object);
 };
 

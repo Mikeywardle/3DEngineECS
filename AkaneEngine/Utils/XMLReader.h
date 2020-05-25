@@ -1,14 +1,14 @@
 #pragma once
 #define AKANEENGINE_API __declspec(dllexport)
 
-#include <rapidxml-1.13/rapidxml.hpp>
+#include <pugixml/pugixml.hpp>
 #include <string>
 
-using namespace rapidxml;
+using namespace pugi;
 
 class AKANEENGINE_API XMLReader
 {
 public:
-	static xml_document<>* parseXml(std::string filePath);
+	static xml_document* parseXml(std::string filePath);
 };
 

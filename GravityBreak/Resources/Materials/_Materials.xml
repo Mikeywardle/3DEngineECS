@@ -3,4 +3,12 @@
     <name>Test</name>
     <file>Test.material</file>
   </Material>
+  <Material>
+    <name>Test2</name>
+    <file>Test2.material</file>
+  </Material>
+  <Material>
+    <name>Gradient</name>
+    <file>Gradient.material</file>
+  </Material>
 </Materials>

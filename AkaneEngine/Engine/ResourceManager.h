@@ -1,21 +1,17 @@
 #define AKANEENGINE_API __declspec(dllexport)
 #include <map>
 #include <string>
+#include <vector>
 #include <glad/glad.h>
 
 #include "../Rendering/Texture2D.h"
 #include "../Rendering/Shader.h"
 #include "../Rendering/Material.h"
-#include "../Utils/XMLReader.h"
 
 
 class AKANEENGINE_API ResourceManager
 {
 public:
-	static Shader shaders[];
-	static Texture2D textures[]; 
-	static Material materials[];
-
 	static void LoadAssets();
 
 	//Shaders

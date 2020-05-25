@@ -32,6 +32,9 @@
     <None Include="Resources\Shaders\spriteVertexShader.vs" />
     <None Include="Resources\Materials\Test.material" />
     <None Include="Resources\Materials\Example.material" />
+    <None Include="Resources\Materials\Test2.material" />
+    <None Include="Resources\Materials\Gradient.material" />
+    <None Include="Resources\Shaders\GradientFragment.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\container.jpg">

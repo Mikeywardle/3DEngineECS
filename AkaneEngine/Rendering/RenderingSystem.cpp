@@ -14,7 +14,7 @@ RenderingSystem::RenderingSystem()
 void RenderingSystem::OnFrame()
 {
 	glClearColor(0.2f, 0.1f, .35f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	Camera* mainCamera = Camera::GetMainCamera();
 	glm::mat4 projection = mainCamera->GetPerspective();

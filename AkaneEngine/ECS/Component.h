@@ -6,7 +6,5 @@
 struct AKANEENGINE_API Component
 {
 	EntityID entityID;
-	Component();
-	virtual bool Init() =0;
 };
 

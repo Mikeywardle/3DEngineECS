@@ -1,6 +1,8 @@
 #include "RenderingSystem.h"
 #include "GLFW/glfw3.h"
 #include "Camera.h"
+#include "../Engine/ResourceManager.h"
+#include "Material.h"
 
 RenderingSystem* RenderingSystem::instance;
 
@@ -20,15 +22,15 @@ void RenderingSystem::OnFrame()
 
 	for (StaticMesh mesh : staticMeshes) 
 	{
-		mesh.shader->Use();
-		mesh.shader->SetMatrix4("projection", projection);
-		mesh.shader->SetMatrix4("view", view);
+		Material * material = ResourceManager::GetMaterial(mesh.material);
 
-		glActiveTexture(GL_TEXTURE0);
-		mesh.texture->Bind();
+		glUseProgram(material->ID);
+		material->SetMatrix4("projection", projection);
+		material->SetMatrix4("view", view);
+		material->SetMatrix4("model", mesh.transform.GetModelMatrix());
 
-		mesh.shader->SetVector4f("colour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		mesh.shader->SetMatrix4("model", mesh.transform.GetModelMatrix());
+		BindTextures(material);
+
 		glBindVertexArray(mesh.vao);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
@@ -36,6 +38,18 @@ void RenderingSystem::OnFrame()
 
 StaticMesh* RenderingSystem::AddStaticMesh()
 {
-	staticMeshes.resize(1);
-	return new(&staticMeshes[0]) StaticMesh();
+	staticMeshes.resize(staticMeshes.size()+1);
+	return new(&staticMeshes[staticMeshes.size()-1]) StaticMesh();
+}
+
+void RenderingSystem::BindTextures(Material* material)
+{
+	for (int i = 0; i < material->textureIds.size(); i++) {
+		glActiveTexture(GL_TEXTURE0+i);
+		glBindTexture(GL_TEXTURE_2D, material->textureIds[i]);
+	}
+}
+
+void RenderingSystem::SetCameraMatrices()
+{
 }

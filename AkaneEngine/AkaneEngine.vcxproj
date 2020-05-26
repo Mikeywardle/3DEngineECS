@@ -207,7 +207,6 @@
     <ClInclude Include="TestLevel2.h" />
     <ClInclude Include="Utils\XMLParsing.h" />
     <ClInclude Include="Utils\XMLReader.h" />
-    <ClInclude Include="Rendering\Vertex.h" />
     <ClInclude Include="_include\pugixml\pugiconfig.hpp" />
     <ClInclude Include="_include\pugixml\pugixml.hpp" />
   </ItemGroup>

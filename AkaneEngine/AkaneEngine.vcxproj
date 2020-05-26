@@ -197,6 +197,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Rendering\Color.h" />
     <ClInclude Include="Rendering\Material.h" />
+    <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\RenderingSystem.h" />
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\Shader.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Rendering\Color.cpp" />
     <ClCompile Include="Rendering\Material.cpp" />
+    <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\RenderingSystem.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\glad.c" />

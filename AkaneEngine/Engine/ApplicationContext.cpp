@@ -100,19 +100,26 @@ int ApplicationContext::Run()
 
 	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
 	mesh->transform.SetPositionRotationScale(glm::vec3(4,-1,-1), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
-	mesh->material = "Test";
+	mesh->material = ResourceManager::GetMaterial("Test");
+	mesh->mesh = ResourceManager::GetMesh("Mesh");
 
 	StaticMesh* mesh2 = RenderingSystem::instance->AddStaticMesh();
 	mesh2->transform.SetPositionRotationScale(glm::vec3(4, 1, -1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
-	mesh2->material = "Test2";
+	mesh2->material = ResourceManager::GetMaterial("Test2");
+	mesh2->mesh = ResourceManager::GetMesh("Mesh");
 
-	StaticMesh* mesh3 = RenderingSystem::instance->AddStaticMesh();
+	StaticMesh* mesh3;
+	Material* mat = ResourceManager::GetMaterial("Gradient");
+	Mesh* mes = mesh2->mesh = ResourceManager::GetMesh("Mesh");
+
+	mesh3 = RenderingSystem::instance->AddStaticMesh();
 	mesh3->transform.SetPositionRotationScale(glm::vec3(4, 1, 1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
-	mesh3->material = "Gradient";
+	mesh3->material = mat;
+	mesh3->mesh = mes;
 
 	while (!glfwWindowShouldClose(window))
 	{
-		cout << 1.0f/GameTime::deltaTime << endl;
+		//cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
 		inputModule.PollInputs();
 		game.DoFrame(GameTime::deltaTime);
 		game.DrawFrame();

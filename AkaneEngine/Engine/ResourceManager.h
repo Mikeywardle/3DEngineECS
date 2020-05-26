@@ -7,6 +7,7 @@
 #include "../Rendering/Texture2D.h"
 #include "../Rendering/Shader.h"
 #include "../Rendering/Material.h"
+#include "../Rendering/Mesh.h"
 
 
 class AKANEENGINE_API ResourceManager
@@ -27,6 +28,7 @@ public:
 	static Material* GetMaterial(std::string name);
 
 	//Static Meshes
+	static Mesh* GetMesh(std::string name);
 
 	//Skeletal Meshes
 
@@ -45,8 +47,10 @@ private:
 	static std::map<std::string, Shader*> shaderTable;
 	static std::map<std::string, Texture2D*> textureTable;
 	static std::map<std::string, Material*> materialTable;
+	static std::map<std::string, Mesh*> meshTable;
 
 	static void LoadTextures();
 	static void LoadShaders();
 	static void LoadMaterials();
+	static void LoadMeshes();
 };

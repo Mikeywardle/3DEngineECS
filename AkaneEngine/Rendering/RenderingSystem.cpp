@@ -3,12 +3,19 @@
 #include "Camera.h"
 #include "../Engine/ResourceManager.h"
 #include "Material.h"
+#include <string>
+#include <algorithm>
 
 RenderingSystem* RenderingSystem::instance;
 
 RenderingSystem::RenderingSystem()
 {
 	instance = this;
+}
+
+bool meshSort(StaticMesh a, StaticMesh b)
+{
+	return a.material > b.material && a.mesh > b.mesh;
 }
 
 void RenderingSystem::OnFrame()
@@ -20,19 +27,61 @@ void RenderingSystem::OnFrame()
 	glm::mat4 projection = mainCamera->GetPerspective();
 	glm::mat4 view = mainCamera->GetView();
 
-	for (StaticMesh mesh : staticMeshes) 
+	//Sort Meshes to be in order
+	std::sort(staticMeshes.begin(), staticMeshes.end(), meshSort);
+
+	std::vector<int> instanceCounts;
+	Material* currentMaterial;
+	Material* nextMaterial;
+	int currentcount = 0;
+
+	currentMaterial = staticMeshes[0].material;
+
+	//first Pass to get number of obejcts per instance
+	for (StaticMesh staticMesh : staticMeshes)
 	{
-		Material * material = ResourceManager::GetMaterial(mesh.material);
+		nextMaterial = staticMesh.material;
 
-		glUseProgram(material->ID);
-		material->SetMatrix4("projection", projection);
-		material->SetMatrix4("view", view);
-		material->SetMatrix4("model", mesh.transform.GetModelMatrix());
+		if (nextMaterial == currentMaterial) {
+			currentcount++;
+		}
+		else 
+		{
+			instanceCounts.push_back(currentcount);
+			currentcount = 1;
+			currentMaterial = nextMaterial;
+		}
+	}
 
-		BindTextures(material);
+	instanceCounts.push_back(currentcount);
+	int currentMesh = 0;
 
-		glBindVertexArray(mesh.vao);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+	for (unsigned int i = 0; i< instanceCounts.size();i++)
+	{
+		Material * material  = staticMeshes[currentMesh].material;
+		Mesh* mesh = staticMeshes[currentMesh].mesh;
+
+		if (mesh == NULL)
+		{
+			currentMesh += instanceCounts[i];
+		}
+		else 
+		{
+
+			glUseProgram(material->ID);
+			material->SetMatrix4("projection", projection);
+			material->SetMatrix4("view", view);
+			glBindVertexArray(staticMeshes[currentMesh].mesh->vao);
+
+			BindTextures(material);
+
+			for (int j = 0; j < instanceCounts[i]; j++) {
+
+				material->SetMatrix4("model", staticMeshes[currentMesh].transform.GetModelMatrix());
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+				currentMesh++;
+			}
+		}
 	}
 }
 
@@ -48,8 +97,4 @@ void RenderingSystem::BindTextures(Material* material)
 		glActiveTexture(GL_TEXTURE0+i);
 		glBindTexture(GL_TEXTURE_2D, material->textureIds[i]);
 	}
-}
-
-void RenderingSystem::SetCameraMatrices()
-{
 }

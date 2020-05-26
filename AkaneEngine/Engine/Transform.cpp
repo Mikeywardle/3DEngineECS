@@ -32,17 +32,21 @@ glm::vec3 Transform::GetScale()
 
 glm::vec3 Transform::GetForward()
 {
-	return forward;
+	glm::vec3 forward;
+	forward.x = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.z));
+	forward.y = sin(glm::radians(rotation.z));
+	forward.z = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.z));
+	return forward = glm::normalize(forward);
 }
 
 glm::vec3 Transform::GetRight()
 {
-	return right;
+	return glm::normalize(glm::cross(GetForward(), WorldUp));;
 }
 
 glm::vec3 Transform::GetUp()
 {
-	return up;
+	return glm::normalize(glm::cross(GetRight(), GetForward()));
 }
 #pragma endregion
 
@@ -58,7 +62,6 @@ void Transform::SetPositionRotation(glm::vec3 newPosition, glm::quat newRotation
 	position = newPosition;
 	rotation = newRotation;
 	CalculateModel();
-	CalculateVectors();
 }
 
 void Transform::SetPositionRotationScale(glm::vec3 newPosition, glm::quat newRotation, glm::vec3 newScale)
@@ -67,7 +70,6 @@ void Transform::SetPositionRotationScale(glm::vec3 newPosition, glm::quat newRot
 	rotation = newRotation;
 	scale = newScale;
 	CalculateModel();
-	CalculateVectors();
 }
 
 void Transform::CalculateModel()
@@ -78,16 +80,5 @@ void Transform::CalculateModel()
 	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, scale);
-}
-
-void Transform::CalculateVectors()
-{
-	forward.x = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.z));
-	forward.y = sin(glm::radians(rotation.z));
-	forward.z = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.z));
-	forward = glm::normalize(forward);
-	
-	right = glm::normalize(glm::cross(forward, WorldUp));
-	up = glm::normalize(glm::cross(right, forward));
 }
 #pragma endregion

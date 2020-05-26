@@ -10,6 +10,7 @@
 std::map<std::string, Texture2D*> ResourceManager::textureTable;
 std::map<std::string, Shader*> ResourceManager::shaderTable;
 std::map<std::string, Material*> ResourceManager::materialTable;
+std::map<std::string, Mesh*> ResourceManager::meshTable;
 
 std::string ResourceManager::resourcesPath = "Resources";
 
@@ -21,8 +22,8 @@ void ResourceManager::LoadAssets()
 	LoadShaders();
 	std::cout << "Loading Materials..."<<std::endl;
 	LoadMaterials();
-
-	//LoadMeshes();
+	std::cout << "Loading Meshes..." << std::endl;
+	LoadMeshes();
 	//LoadAudio();
 }
 
@@ -193,8 +194,18 @@ Material* ResourceManager::GetMaterial(std::string name)
 {
 	return materialTable[name];
 }
-
 #pragma endregion
+
+
+Mesh* ResourceManager::GetMesh(std::string name)
+{
+	return meshTable[name];
+}
+
+void ResourceManager::LoadMeshes()
+{
+	meshTable["Mesh"] = new Mesh();
+}
 
 void ResourceManager::Clear()
 {

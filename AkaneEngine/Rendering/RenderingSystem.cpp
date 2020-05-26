@@ -71,7 +71,7 @@ void RenderingSystem::OnFrame()
 			glUseProgram(material->ID);
 			material->SetMatrix4("projection", projection);
 			material->SetMatrix4("view", view);
-			glBindVertexArray(staticMeshes[currentMesh].mesh->vao);
+			glBindVertexArray(staticMeshes[currentMesh].mesh->VAO);
 
 			BindTextures(material);
 

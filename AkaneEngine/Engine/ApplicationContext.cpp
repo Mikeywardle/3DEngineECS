@@ -6,7 +6,6 @@
 #include "../TestLevel.h"
 #include "ResourceManager.h"
 #include "../Rendering/Camera.h"
-#include "../Maths/Vector3.h"
 
 using namespace std;
 
@@ -28,7 +27,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 void ApplicationContext::Initialize()
 {
 	initialized = true;
-	//game.SwitchLevel<TestLevel>();
 }
 
 bool ApplicationContext::intialiseWindow()
@@ -94,6 +92,9 @@ int ApplicationContext::Run()
 
 	ResourceManager::LoadAssets();
 	inputModule.SetWindow(window);
+
+	//game.SwitchLevel<TestLevel>();
+
 	   
 	Camera camera = Camera();
 	camera.transform.SetPositionRotation(glm::vec3(0, 0, 0), glm::quat(0, 0, 0, 0));

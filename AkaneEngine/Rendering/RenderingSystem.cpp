@@ -5,6 +5,7 @@
 #include "Material.h"
 #include <string>
 #include <algorithm>
+#include <execution>
 
 RenderingSystem* RenderingSystem::instance;
 
@@ -72,13 +73,14 @@ void RenderingSystem::OnFrame()
 			material->SetMatrix4("projection", projection);
 			material->SetMatrix4("view", view);
 			glBindVertexArray(staticMeshes[currentMesh].mesh->VAO);
+			unsigned int indices = mesh->indices.size();
 
 			BindTextures(material);
 
 			for (int j = 0; j < instanceCounts[i]; j++) {
 
 				material->SetMatrix4("model", staticMeshes[currentMesh].transform.GetModelMatrix());
-				glDrawArrays(GL_TRIANGLES, 0, 6);
+				glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
 				currentMesh++;
 			}
 		}

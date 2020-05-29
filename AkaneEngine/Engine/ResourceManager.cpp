@@ -5,7 +5,10 @@
 #include <fstream>
 
 #include<stb_image.h>
+#include <glm/vec3.hpp>
 #include "../Utils/XMLReader.h"
+
+
 
 std::map<std::string, Texture2D*> ResourceManager::textureTable;
 std::map<std::string, Shader*> ResourceManager::shaderTable;
@@ -196,7 +199,7 @@ Material* ResourceManager::GetMaterial(std::string name)
 }
 #pragma endregion
 
-
+#pragma region Meshes
 Mesh* ResourceManager::GetMesh(std::string name)
 {
 	return meshTable[name];
@@ -204,8 +207,93 @@ Mesh* ResourceManager::GetMesh(std::string name)
 
 void ResourceManager::LoadMeshes()
 {
-	meshTable["Mesh"] = new Mesh();
+	xml_document* meshSettings = XMLReader::parseXml(resourcesPath + "/Meshes/_Meshes.xml");
+	Assimp::Importer importer;
+
+	for (xml_node meshNode = meshSettings->child("Meshes").child("Mesh"); meshNode; meshNode = meshNode.next_sibling())
+	{
+		std::string meshpath = resourcesPath + "/Meshes/" + meshNode.child("file").first_child().value();
+		const aiScene* scene = importer.ReadFile(meshpath, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			std::cout << "Error Loading Model" << importer.GetErrorString() << std::endl;
+		}
+		else 
+		{
+			ProcessNode(scene->mRootNode, scene);
+		}
+	}
 }
+
+void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
+{
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		LoadMesh(mesh, scene);
+	}
+
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene);
+	}
+}
+
+Mesh* ResourceManager::LoadMesh(aiMesh* mesh, const aiScene* scene)
+{
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	//Loading Vertices (positions, normals, texture coordinates)
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	{
+		Vertex vertex;
+
+		glm::vec3 vector;
+		vector.x = mesh->mVertices[i].x;
+		vector.y = mesh->mVertices[i].y;
+		vector.z = mesh->mVertices[i].z;
+		vertex.Position = vector;
+
+		vector.x = mesh->mNormals[i].x;
+		vector.y = mesh->mNormals[i].y;
+		vector.z = mesh->mNormals[i].z;
+		vertex.Normal = vector;
+
+		if (mesh->mTextureCoords[0])
+		{
+			glm::vec2 vec;
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
+			vertex.TexCoords = vec;
+		}
+		else
+		{
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+		}
+
+		vertices.push_back(vertex);
+	}
+
+	//Loading indices
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+
+	std::string name(mesh->mName.C_Str());
+	std::cout << name << std::endl;
+	meshTable[name] = new Mesh(vertices, indices);
+}
+
+Mesh* ResourceManager::LoadMeshFromFile(const char* file)
+{
+	return new Mesh();
+}
+#pragma endregion
 
 void ResourceManager::Clear()
 {

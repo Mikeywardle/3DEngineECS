@@ -9,6 +9,10 @@
 #include "../Rendering/Material.h"
 #include "../Rendering/Mesh.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 
 class AKANEENGINE_API ResourceManager
 {
@@ -28,6 +32,7 @@ public:
 	static Material* GetMaterial(std::string name);
 
 	//Static Meshes
+	static Mesh* LoadMesh(aiMesh* mesh, const aiScene* scene);
 	static Mesh* GetMesh(std::string name);
 
 	//Skeletal Meshes
@@ -43,6 +48,7 @@ private:
 	static Shader* loadShaderFromFile(const GLchar* shaderFile, int shaderType);
 	static Texture2D* loadTextureFromFile(const char* file, GLboolean alpha);
 	static Material* LoadMaterialFromFile(const char* file);
+	static Mesh* LoadMeshFromFile(const char* file);
 
 	static std::map<std::string, Shader*> shaderTable;
 	static std::map<std::string, Texture2D*> textureTable;
@@ -53,4 +59,6 @@ private:
 	static void LoadShaders();
 	static void LoadMaterials();
 	static void LoadMeshes();
+
+	static void ProcessNode(aiNode* node, const aiScene* scene);
 };

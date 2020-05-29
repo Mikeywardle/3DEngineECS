@@ -100,21 +100,21 @@ int ApplicationContext::Run()
 	camera.transform.SetPositionRotation(glm::vec3(0, 0, 0), glm::quat(0, 0, 0, 0));
 
 	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
-	mesh->transform.SetPositionRotationScale(glm::vec3(4,-1,-1), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
+	mesh->transform.SetPositionRotationScale(glm::vec3(8,-1,-1), glm::quat(0,90,0,0), glm::vec3(1, 1, 1));
 	mesh->material = ResourceManager::GetMaterial("Test");
-	mesh->mesh = ResourceManager::GetMesh("Mesh");
+	mesh->mesh = ResourceManager::GetMesh("Cube.001");
 
 	StaticMesh* mesh2 = RenderingSystem::instance->AddStaticMesh();
-	mesh2->transform.SetPositionRotationScale(glm::vec3(4, 1, -1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
+	mesh2->transform.SetPositionRotationScale(glm::vec3(8, 1, -1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
 	mesh2->material = ResourceManager::GetMaterial("Test2");
-	mesh2->mesh = ResourceManager::GetMesh("Mesh");
+	mesh2->mesh = ResourceManager::GetMesh("Cube");
 
 	StaticMesh* mesh3;
 	Material* mat = ResourceManager::GetMaterial("Gradient");
-	Mesh* mes = mesh2->mesh = ResourceManager::GetMesh("Mesh");
+	Mesh* mes = mesh2->mesh = ResourceManager::GetMesh("Cube");
 
 	mesh3 = RenderingSystem::instance->AddStaticMesh();
-	mesh3->transform.SetPositionRotationScale(glm::vec3(4, 1, 1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
+	mesh3->transform.SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
 	mesh3->material = mat;
 	mesh3->mesh = mes;
 

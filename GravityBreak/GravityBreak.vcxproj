@@ -158,6 +158,8 @@
     <None Include="Resources\Materials\Gradient.material" />
     <None Include="Resources\Materials\Test.material" />
     <None Include="Resources\Materials\Test2.material" />
+    <None Include="Resources\Meshes\test.fbx" />
+    <None Include="Resources\Meshes\test2.fbx" />
     <None Include="Resources\Shaders\GradientFragment.fs" />
     <None Include="Resources\Shaders\spriteFragmentShader.fs" />
     <None Include="Resources\Shaders\spriteVertexShader.vs" />
@@ -167,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Resources\Materials\_Materials.xml" />
+    <Xml Include="Resources\Meshes\_Meshes.xml" />
     <Xml Include="Resources\Shaders\_Shaders.xml" />
     <Xml Include="Resources\Textures\_Textures.xml" />
   </ItemGroup>

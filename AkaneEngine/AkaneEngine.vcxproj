@@ -109,7 +109,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
     </Link>
@@ -197,6 +197,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Rendering\Color.h" />
     <ClInclude Include="Rendering\Material.h" />
+    <ClInclude Include="Rendering\Mesh.h" />
     <ClInclude Include="Rendering\RenderingSystem.h" />
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\Shader.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Rendering\Color.cpp" />
     <ClCompile Include="Rendering\Material.cpp" />
+    <ClCompile Include="Rendering\Mesh.cpp" />
     <ClCompile Include="Rendering\RenderingSystem.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\glad.c" />
@@ -240,6 +242,9 @@
     <ClCompile Include="Rendering\Texture2D.cpp" />
     <ClCompile Include="Utils\XMLReader.cpp" />
     <ClCompile Include="_include\pugixml\pugixml.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Program Files\Assimp\bin\x64\assimp-vc140-mt.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

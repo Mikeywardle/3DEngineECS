@@ -35,6 +35,8 @@
     <None Include="Resources\Materials\Test2.material" />
     <None Include="Resources\Materials\Gradient.material" />
     <None Include="Resources\Shaders\GradientFragment.fs" />
+    <None Include="Resources\Meshes\test.fbx" />
+    <None Include="Resources\Meshes\test2.fbx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\container.jpg">
@@ -45,5 +47,6 @@
     <Xml Include="Resources\Shaders\_Shaders.xml" />
     <Xml Include="Resources\Textures\_Textures.xml" />
     <Xml Include="Resources\Materials\_Materials.xml" />
+    <Xml Include="Resources\Meshes\_Meshes.xml" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,6 @@
 #include "../TestLevel.h"
 #include "ResourceManager.h"
 #include "../Rendering/Camera.h"
-#include "../Maths/Vector3.h"
 
 using namespace std;
 
@@ -28,7 +27,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 void ApplicationContext::Initialize()
 {
 	initialized = true;
-	//game.SwitchLevel<TestLevel>();
 }
 
 bool ApplicationContext::intialiseWindow()
@@ -94,25 +92,35 @@ int ApplicationContext::Run()
 
 	ResourceManager::LoadAssets();
 	inputModule.SetWindow(window);
+
+	//game.SwitchLevel<TestLevel>();
+
 	   
 	Camera camera = Camera();
 	camera.transform.SetPositionRotation(glm::vec3(0, 0, 0), glm::quat(0, 0, 0, 0));
 
 	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
-	mesh->transform.SetPositionRotationScale(glm::vec3(4,-1,-1), glm::quat(0,0,90,0), glm::vec3(1, 1, 1));
-	mesh->material = "Test";
+	mesh->transform.SetPositionRotationScale(glm::vec3(8,-1,-1), glm::quat(0,90,0,0), glm::vec3(1, 1, 1));
+	mesh->material = ResourceManager::GetMaterial("Test");
+	mesh->mesh = ResourceManager::GetMesh("Cube.001");
 
 	StaticMesh* mesh2 = RenderingSystem::instance->AddStaticMesh();
-	mesh2->transform.SetPositionRotationScale(glm::vec3(4, 1, -1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
-	mesh2->material = "Test2";
+	mesh2->transform.SetPositionRotationScale(glm::vec3(8, 1, -1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
+	mesh2->material = ResourceManager::GetMaterial("Test2");
+	mesh2->mesh = ResourceManager::GetMesh("Cube");
 
-	StaticMesh* mesh3 = RenderingSystem::instance->AddStaticMesh();
-	mesh3->transform.SetPositionRotationScale(glm::vec3(4, 1, 1), glm::quat(0, 0, 90, 0), glm::vec3(1, 1, 1));
-	mesh3->material = "Gradient";
+	StaticMesh* mesh3;
+	Material* mat = ResourceManager::GetMaterial("Gradient");
+	Mesh* mes = mesh2->mesh = ResourceManager::GetMesh("Cube");
+
+	mesh3 = RenderingSystem::instance->AddStaticMesh();
+	mesh3->transform.SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
+	mesh3->material = mat;
+	mesh3->mesh = mes;
 
 	while (!glfwWindowShouldClose(window))
 	{
-		cout << 1.0f/GameTime::deltaTime << endl;
+		//cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
 		inputModule.PollInputs();
 		game.DoFrame(GameTime::deltaTime);
 		game.DrawFrame();

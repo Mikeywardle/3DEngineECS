@@ -32,12 +32,7 @@ private:
 	glm::quat rotation = glm::quat(0,0,0,0);
 	glm::vec3 scale = glm::vec3(1,1,1);
 
-	glm::vec3 forward = WorldForward;
-	glm::vec3 right = WorldRight;
-	glm::vec3 up = WorldUp;
-
 	glm::mat4 model;
 
 	void CalculateModel();
-	void CalculateVectors();
 };

@@ -172,12 +172,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ECS\Component.h" />
-    <ClInclude Include="ECS\ComponentContext.h" />
+    <ClInclude Include="ECS\ComponentArray.h" />
+    <ClInclude Include="ECS\ComponentManager.h" />
+    <ClInclude Include="ECS\ECSDefinitions.h" />
     <ClInclude Include="ECS\ECSManager.h" />
-    <ClInclude Include="ECS\EcsTypeDefs.h" />
-    <ClInclude Include="ECS\Entity.h" />
+    <ClInclude Include="ECS\EntityManager.h" />
     <ClInclude Include="ECS\System.h" />
+    <ClInclude Include="ECS\SystemManager.h" />
     <ClInclude Include="Engine\Actor.h" />
     <ClInclude Include="Engine\ApplicationContext.h" />
     <ClInclude Include="Engine\DebugActor.h" />
@@ -212,11 +213,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ECS\Component.cpp" />
-    <ClCompile Include="ECS\ComponentContext.cpp" />
+    <ClCompile Include="ECS\ComponentArray.cpp" />
+    <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\ECSManager.cpp" />
-    <ClCompile Include="ECS\Entity.cpp" />
-    <ClCompile Include="ECS\System.cpp" />
+    <ClCompile Include="ECS\EntityManager.cpp" />
+    <ClCompile Include="ECS\SystemManager.cpp" />
     <ClCompile Include="Engine\Actor.cpp" />
     <ClCompile Include="Engine\ApplicationContext.cpp" />
     <ClCompile Include="Engine\DebugActor.cpp" />

@@ -4,22 +4,9 @@
 #include "../Engine/ResourceManager.h"
 #include "Material.h"
 #include <string>
-#include <algorithm>
-#include <execution>
+#include "StaticMesh.h"
 
-RenderingSystem* RenderingSystem::instance;
-
-RenderingSystem::RenderingSystem()
-{
-	instance = this;
-}
-
-bool meshSort(StaticMesh a, StaticMesh b)
-{
-	return a.material > b.material && a.mesh > b.mesh;
-}
-
-void RenderingSystem::OnFrame()
+void RenderingSystem::OnFrame(float deltaTime)
 {
 	glClearColor(0.2f, 0.1f, .35f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -28,36 +15,30 @@ void RenderingSystem::OnFrame()
 	glm::mat4 projection = mainCamera->GetPerspective();
 	glm::mat4 view = mainCamera->GetView();
 
-	//Sort Meshes to be in order
-	std::sort(staticMeshes.begin(), staticMeshes.end(), meshSort);
 
-	std::vector<int> instanceCounts;
-	Material* currentMaterial;
-	Material* nextMaterial;
-	int currentcount = 0;
-
-	currentMaterial = staticMeshes[0].material;
-
-	//first Pass to get number of obejcts per instance
-	for (StaticMesh staticMesh : staticMeshes)
+	for (Entity entity : entities)
 	{
-		nextMaterial = staticMesh.material;
+		Transform& t = ecs.GetComponent<Transform>(entity);
+		StaticMesh& s = ecs.GetComponent<StaticMesh>(entity);
 
-		if (nextMaterial == currentMaterial) {
-			currentcount++;
-		}
-		else 
-		{
-			instanceCounts.push_back(currentcount);
-			currentcount = 1;
-			currentMaterial = nextMaterial;
-		}
+		Material* material = s.material;
+		Mesh* mesh = s.mesh;
+
+		glUseProgram(material->ID);
+		material->SetMatrix4("projection", projection);
+		material->SetMatrix4("view", view);
+		glBindVertexArray(mesh->VAO);
+		unsigned int indices = mesh->indices.size();
+
+		BindTextures(material);
+
+		material->SetMatrix4("model", t.GetModelMatrix());
+		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+			
+		
 	}
 
-	instanceCounts.push_back(currentcount);
-	int currentMesh = 0;
-
-	for (unsigned int i = 0; i< instanceCounts.size();i++)
+	/*for (unsigned int i = 0; i< instanceCounts.size();i++)
 	{
 		Material * material  = staticMeshes[currentMesh].material;
 		Mesh* mesh = staticMeshes[currentMesh].mesh;
@@ -84,13 +65,7 @@ void RenderingSystem::OnFrame()
 				currentMesh++;
 			}
 		}
-	}
-}
-
-StaticMesh* RenderingSystem::AddStaticMesh()
-{
-	staticMeshes.resize(staticMeshes.size()+1);
-	return new(&staticMeshes[staticMeshes.size()-1]) StaticMesh();
+	}*/
 }
 
 void RenderingSystem::BindTextures(Material* material)

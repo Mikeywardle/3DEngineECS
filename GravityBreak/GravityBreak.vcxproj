@@ -152,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Test\A.h" />
+    <ClInclude Include="Test\B.h" />
+    <ClInclude Include="Test\X.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Materials\Example.material" />

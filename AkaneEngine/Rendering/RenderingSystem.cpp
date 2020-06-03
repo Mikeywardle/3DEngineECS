@@ -5,9 +5,12 @@
 #include "Material.h"
 #include <string>
 #include "StaticMesh.h"
+#include "../ECS/ECSManager.h"
 
 void RenderingSystem::OnFrame(float deltaTime)
 {
+	ECSManager ecs = getECS();
+
 	glClearColor(0.2f, 0.1f, .35f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -33,8 +36,7 @@ void RenderingSystem::OnFrame(float deltaTime)
 		BindTextures(material);
 
 		material->SetMatrix4("model", t.GetModelMatrix());
-		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
-			
+		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);		
 		
 	}
 

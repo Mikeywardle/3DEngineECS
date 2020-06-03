@@ -8,5 +8,6 @@ class AKANEENGINE_API System {
 public:
 	std::set<Entity> entities;
 	virtual void OnFrame(float deltaTime) {};
+	class ECSManager getECS();
 
 };

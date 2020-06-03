@@ -217,6 +217,7 @@
     <ClCompile Include="ECS\ComponentManager.cpp" />
     <ClCompile Include="ECS\ECSManager.cpp" />
     <ClCompile Include="ECS\EntityManager.cpp" />
+    <ClCompile Include="ECS\System.cpp" />
     <ClCompile Include="ECS\SystemManager.cpp" />
     <ClCompile Include="Engine\Actor.cpp" />
     <ClCompile Include="Engine\ApplicationContext.cpp" />

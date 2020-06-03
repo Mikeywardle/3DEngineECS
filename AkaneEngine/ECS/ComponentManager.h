@@ -4,6 +4,7 @@
 #include "ECSDefinitions.h"
 #include "ComponentArray.h"
 #include <unordered_map>
+#include <typeinfo>
 
 class AKANEENGINE_API ComponentManager
 {

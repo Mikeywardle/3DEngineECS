@@ -224,6 +224,9 @@
     <ClCompile Include="ECS\ECSManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ECS\System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Program Files\Assimp\bin\x64\assimp-vc140-mt.dll" />

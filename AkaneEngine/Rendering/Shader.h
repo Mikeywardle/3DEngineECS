@@ -13,6 +13,7 @@ class AKANEENGINE_API Shader {
 public:
 
 	GLuint ID;
+	Shader() {};
 	Shader(const GLchar* shaderSource, int shaderType);
 
 private:

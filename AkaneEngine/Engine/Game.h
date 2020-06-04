@@ -6,22 +6,24 @@
 #include <map>
 #include <string>
 #include "Level.h"
-#include "../Rendering/RenderingSystem.h"
-
-using namespace std;
+#include "../ECS/ECSManager.h"
 
 class AKANEENGINE_API Game
 {
 public:
 
+	Game();
+
 	Event<float>* GetFrameEvent();
 	Event<float>* GetEndFrameEvent();
+
+	ECSManager ecs;
 
 	void DoFrame(float deltaTime);
 	void DoEndFrame(float deltaTime);
 
-	void LoadLevel(string levelName);
-	void UnloadLevel(string levelName);
+	void LoadLevel(std::string levelName);
+	void UnloadLevel(std::string levelName);
 
 	template<class Clazz>
 	void SwitchLevel() 
@@ -36,16 +38,12 @@ public:
 	class Actor* CreateObject();
 	void DestroyObject(class Actor* toDestroy);
 
-	void DrawFrame();
-
 private:
 
 	Event<float> Frame;
 	Event<float> EndFrame;
 
-	map<string ,Level*> loadedLevels =  map<string,Level*>();
+	map<std::string ,Level*> loadedLevels =  map<std::string,Level*>();
 	Level* activeLevel;
-
-	RenderingSystem renderingSystem = RenderingSystem();
 };
 

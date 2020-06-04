@@ -6,6 +6,8 @@
 #include "../TestLevel.h"
 #include "ResourceManager.h"
 #include "../Rendering/Camera.h"
+#include "../Rendering/StaticMesh.h"
+#include "../Rendering/RenderingSystem.h"
 
 using namespace std;
 
@@ -99,31 +101,56 @@ int ApplicationContext::Run()
 	Camera camera = Camera();
 	camera.transform.SetPositionRotation(glm::vec3(0, 0, 0), glm::quat(0, 0, 0, 0));
 
-	StaticMesh* mesh = RenderingSystem::instance->AddStaticMesh();
-	mesh->transform.SetPositionRotationScale(glm::vec3(8,-1,-1), glm::quat(0,90,0,0), glm::vec3(1, 1, 1));
-	mesh->material = ResourceManager::GetMaterial("Test");
-	mesh->mesh = ResourceManager::GetMesh("Cube.001");
+	ECSManager& ecs = game.ecs;
 
-	StaticMesh* mesh2 = RenderingSystem::instance->AddStaticMesh();
-	mesh2->transform.SetPositionRotationScale(glm::vec3(8, 1, -1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
-	mesh2->material = ResourceManager::GetMaterial("Test2");
-	mesh2->mesh = ResourceManager::GetMesh("Cube");
+	ecs.RegisterComponent<StaticMesh>();
+	ecs.RegisterComponent<Transform>();
 
-	StaticMesh* mesh3;
-	Material* mat = ResourceManager::GetMaterial("Gradient");
-	Mesh* mes = mesh2->mesh = ResourceManager::GetMesh("Cube");
+	RenderingSystem* rs = ecs.RegisterSystem<RenderingSystem>();
 
-	mesh3 = RenderingSystem::instance->AddStaticMesh();
-	mesh3->transform.SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
-	mesh3->material = mat;
-	mesh3->mesh = mes;
+	Signature signature;
+	signature.set(ecs.GetComponentType<Transform>());
+	signature.set(ecs.GetComponentType<StaticMesh>());
+	ecs.SetSystemSignature<RenderingSystem>(signature);
+
+	game.GetFrameEvent()->AddListener(rs, &RenderingSystem::OnFrame);
+
+	Entity mesh = ecs.CreateEntity();
+	ecs.AddComponent<StaticMesh>(mesh);
+	ecs.AddComponent<Transform>(mesh);
+
+	ecs.GetComponent<Transform>(mesh).SetPositionRotationScale(glm::vec3(8,-1,-1), glm::quat(0,90,0,0), glm::vec3(1, 1, 1));
+	ecs.GetComponent<StaticMesh>(mesh).material = ResourceManager::GetMaterial("Test");
+	ecs.GetComponent<StaticMesh>(mesh).mesh = ResourceManager::GetMesh("Cube.001");
+
+	Entity mesh2 = ecs.CreateEntity();
+	ecs.AddComponent<StaticMesh>(mesh2);
+	ecs.AddComponent<Transform>(mesh2);
+
+	ecs.GetComponent<Transform>(mesh2).SetPositionRotationScale(glm::vec3(8, 1, -1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
+	ecs.GetComponent<StaticMesh>(mesh2).material = ResourceManager::GetMaterial("Test2");
+	ecs.GetComponent<StaticMesh>(mesh2).mesh = ResourceManager::GetMesh("Cube");
+
+	Entity mesh3;
+
+	for (int i = 0; i < 100000; i++) {
+		mesh3 = ecs.CreateEntity();
+		 ecs.AddComponent<StaticMesh>(mesh3);
+		 ecs.AddComponent<Transform>(mesh3);
+
+		ecs.GetComponent<Transform>(mesh3).SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
+		ecs.GetComponent<StaticMesh>(mesh3).material = ResourceManager::GetMaterial("Gradient");
+		ecs.GetComponent<StaticMesh>(mesh3).mesh = ResourceManager::GetMesh("Cube");
+	}
+
+
+
 
 	while (!glfwWindowShouldClose(window))
 	{
-		//cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
+		cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
 		inputModule.PollInputs();
 		game.DoFrame(GameTime::deltaTime);
-		game.DrawFrame();
 		glfwSwapBuffers(window);
 		GetFrameTime();
 	}

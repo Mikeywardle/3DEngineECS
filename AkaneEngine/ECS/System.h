@@ -1,11 +1,17 @@
 #pragma once
+
 #define AKANEENGINE_API __declspec(dllexport)
-#include "ComponentContext.h"
+#include <vector>
+#include "ECSDefinitions.h"
 
-class AKANEENGINE_API System
-{
+class AKANEENGINE_API System {
 public:
-	virtual void Init() = 0;
-	virtual void OnFrame(float deltaTime, ComponentContext* context) {};
-};
+	std::vector<Entity> entities;
+	virtual void OnRegister();
+	virtual void OnFrame(float deltaTime) {};
+	class ECSManager& getECS();
 
+protected:
+	//ECSManager* ecs;
+
+};

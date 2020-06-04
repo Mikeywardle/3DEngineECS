@@ -1,6 +1,11 @@
 #include "Game.h"
 #include "Actor.h"
 
+Game::Game()
+{
+	ecs.Init();
+}
+
 Event<float>* Game::GetFrameEvent()
 {
 	return &Frame;
@@ -34,8 +39,3 @@ Actor* Game::CreateObject()
 
 void Game::DestroyObject(Actor* toDestroy)
 {}
-
-void Game::DrawFrame()
-{
-	renderingSystem.OnFrame();
-}

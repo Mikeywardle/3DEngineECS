@@ -1,26 +1,30 @@
 #include "RenderingSystem.h"
-#include "GLFW/glfw3.h"
 #include "Camera.h"
 #include "../Engine/ResourceManager.h"
 #include "Material.h"
-#include <string>
-#include <algorithm>
-#include <execution>
+#include "StaticMesh.h"
+#include "../ECS/ECSManager.h"
+#include <set>
 
-RenderingSystem* RenderingSystem::instance;
-
-RenderingSystem::RenderingSystem()
+struct RenderSortingData
 {
-	instance = this;
-}
+public:
+	RenderSortingData(Mesh* mesh, Material* material, Entity entity)
+	{
+		this->mesh = mesh;
+		this->material = material;
+		entities.push_back(entity);
+	}
 
-bool meshSort(StaticMesh a, StaticMesh b)
-{
-	return a.material > b.material && a.mesh > b.mesh;
-}
+	Mesh* mesh;
+	Material* material;
+	std::vector<Entity> entities;
+};
 
-void RenderingSystem::OnFrame()
+void RenderingSystem::OnFrame(float deltaTime)
 {
+	ECSManager& ecs = getECS();
+
 	glClearColor(0.2f, 0.1f, .35f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -28,69 +32,52 @@ void RenderingSystem::OnFrame()
 	glm::mat4 projection = mainCamera->GetPerspective();
 	glm::mat4 view = mainCamera->GetView();
 
-	//Sort Meshes to be in order
-	std::sort(staticMeshes.begin(), staticMeshes.end(), meshSort);
+	std::vector<RenderSortingData> data;
 
-	std::vector<int> instanceCounts;
-	Material* currentMaterial;
-	Material* nextMaterial;
-	int currentcount = 0;
-
-	currentMaterial = staticMeshes[0].material;
-
-	//first Pass to get number of obejcts per instance
-	for (StaticMesh staticMesh : staticMeshes)
+	bool entityMatched;
+	for (Entity entity : entities)
 	{
-		nextMaterial = staticMesh.material;
+		entityMatched = false;
+		StaticMesh& s = ecs.GetComponent<StaticMesh>(entity);
 
-		if (nextMaterial == currentMaterial) {
-			currentcount++;
-		}
-		else 
-		{
-			instanceCounts.push_back(currentcount);
-			currentcount = 1;
-			currentMaterial = nextMaterial;
-		}
+		 for (RenderSortingData rsd : data)
+		 {
+			 if (rsd.mesh == s.mesh && rsd.material == s.material)
+			 {
+				 rsd.entities.push_back(entity);
+				 entityMatched = true;
+				 break;
+			 }
+		 }
+
+		 if (!entityMatched) 
+			 data.push_back(RenderSortingData(s.mesh, s.material, entity));
 	}
 
-	instanceCounts.push_back(currentcount);
-	int currentMesh = 0;
 
-	for (unsigned int i = 0; i< instanceCounts.size();i++)
+	for (RenderSortingData rsd : data)
 	{
-		Material * material  = staticMeshes[currentMesh].material;
-		Mesh* mesh = staticMeshes[currentMesh].mesh;
+		Material* material = rsd.material;
+		Mesh* mesh = rsd.mesh;
 
-		if (mesh == NULL)
+		glUseProgram(material->ID);
+		material->SetMatrix4("projection", projection);
+		material->SetMatrix4("view", view);
+		BindTextures(material);
+
+		glBindVertexArray(mesh->VAO);
+		unsigned int indices = mesh->indices.size();
+
+		for (Entity entity : rsd.entities)
 		{
-			currentMesh += instanceCounts[i];
+			Transform& t = ecs.GetComponent<Transform>(entity);
+
+			material->SetMatrix4("model", t.GetModelMatrix());
+			glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+
 		}
-		else 
-		{
 
-			glUseProgram(material->ID);
-			material->SetMatrix4("projection", projection);
-			material->SetMatrix4("view", view);
-			glBindVertexArray(staticMeshes[currentMesh].mesh->VAO);
-			unsigned int indices = mesh->indices.size();
-
-			BindTextures(material);
-
-			for (int j = 0; j < instanceCounts[i]; j++) {
-
-				material->SetMatrix4("model", staticMeshes[currentMesh].transform.GetModelMatrix());
-				glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
-				currentMesh++;
-			}
-		}
 	}
-}
-
-StaticMesh* RenderingSystem::AddStaticMesh()
-{
-	staticMeshes.resize(staticMeshes.size()+1);
-	return new(&staticMeshes[staticMeshes.size()-1]) StaticMesh();
 }
 
 void RenderingSystem::BindTextures(Material* material)

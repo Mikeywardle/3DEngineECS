@@ -1,23 +1,15 @@
 #pragma once
 
 #define AKANEENGINE_API __declspec(dllexport)
-#include "StaticMesh.h"
-#include "glm/vec3.hpp"
 #include <vector>
+#include "Material.h"
+#include "../ECS/System.h"
 
-class AKANEENGINE_API RenderingSystem
+class AKANEENGINE_API RenderingSystem : public System
 {
 public:
-	RenderingSystem();
-
-	void OnFrame();
-	StaticMesh* AddStaticMesh();
-
-	static RenderingSystem* instance;
-
+	virtual void OnFrame(float deltTaime) override;
 private:
-	std::vector<StaticMesh> staticMeshes;
-
 	void BindTextures(Material* material);
 };
 

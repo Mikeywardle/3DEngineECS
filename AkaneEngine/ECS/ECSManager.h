@@ -38,15 +38,15 @@ public:
 	}
 
 	template<typename T>
-	void AddComponent(Entity entity, T component)
+	T& AddComponent(Entity entity)
 	{
-		componentManager.AddComponent<T>(entity, component);
-
 		Signature signature = entityManager.GetSignature(entity);
 		signature.set(componentManager.GetComponentType<T>(), true);
 		entityManager.SetSignature(entity, signature);
 
 		systemManager.EntitySignatureChanged(entity, signature);
+
+		return componentManager.AddComponent<T>(entity);
 	}
 
 	template<typename T>

@@ -15,6 +15,11 @@ std::map<std::string, Shader*> ResourceManager::shaderTable;
 std::map<std::string, Material*> ResourceManager::materialTable;
 std::map<std::string, Mesh*> ResourceManager::meshTable;
 
+std::vector<Material> ResourceManager::materials;
+std::vector<Mesh> ResourceManager::meshes;
+std::vector<Texture2D> ResourceManager::textures;
+std::vector<Shader> ResourceManager::shaders;
+
 std::string ResourceManager::resourcesPath = "Resources";
 
 void ResourceManager::LoadAssets()
@@ -55,6 +60,8 @@ Texture2D* ResourceManager::LoadTexture(const GLchar* file, GLboolean alpha, std
 
 Texture2D* ResourceManager::loadTextureFromFile(const char* file, GLboolean alpha)
 {
+	textures.resize(textures.size() + 1);
+
 	Texture2D* texture = new Texture2D();
 	if (alpha)
 	{
@@ -130,8 +137,10 @@ Shader* ResourceManager::loadShaderFromFile(const GLchar* shaderFile, int shader
 		std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
 	}
 	const GLchar* shaderCode = shaderCodeString.c_str();
-	Shader* shader = new Shader(shaderCode, shaderType);
-	return shader;
+
+	shaders.resize(shaders.size() + 1);
+	return new Shader(shaderCode, shaderType);
+
 }
 #pragma endregion
 
@@ -224,6 +233,8 @@ void ResourceManager::LoadMeshes()
 			ProcessNode(scene->mRootNode, scene);
 		}
 	}
+
+	delete meshSettings;
 }
 
 void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
@@ -286,6 +297,8 @@ Mesh* ResourceManager::LoadMesh(aiMesh* mesh, const aiScene* scene)
 
 	std::string name(mesh->mName.C_Str());
 	std::cout << name << std::endl;
+
+	meshes.resize(meshes.size() + 1);
 	meshTable[name] = new Mesh(vertices, indices);
 }
 

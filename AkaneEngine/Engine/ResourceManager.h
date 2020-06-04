@@ -19,6 +19,11 @@ class AKANEENGINE_API ResourceManager
 public:
 	static void LoadAssets();
 
+	static std::vector<Material> materials;
+	static std::vector<Mesh> meshes;
+	static std::vector<Texture2D> textures;
+	static std::vector<Shader> shaders;
+
 	//Shaders
 	static Shader* LoadShader(const GLchar* shaderFile, int shaderType, std::string name);
 	static Shader* GetShader(std::string name);
@@ -54,6 +59,7 @@ private:
 	static std::map<std::string, Texture2D*> textureTable;
 	static std::map<std::string, Material*> materialTable;
 	static std::map<std::string, Mesh*> meshTable;
+
 
 	static void LoadTextures();
 	static void LoadShaders();

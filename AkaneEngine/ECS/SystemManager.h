@@ -4,6 +4,8 @@
 #include "ECSDefinitions.h"
 #include "System.h"
 #include <unordered_map>
+#include <algorithm>
+#include <vector>
 
 class AKANEENGINE_API SystemManager
 {
@@ -15,6 +17,7 @@ public:
 
 		T* system = new T();
 		systems.insert({typeName, system });
+		system->OnRegister();
 		return system;
 
 	}
@@ -30,8 +33,8 @@ public:
 	{
 		for (auto const& pair : systems)
 		{
-			System* system = pair.second;
-			system->entities.erase(entity);
+			std::vector<Entity>* entities = &pair.second->entities;
+			entities->erase(std::remove(entities->begin(), entities->end(),entity), entities->end());
 		}
 	}
 	
@@ -45,11 +48,12 @@ public:
 
 			if ((entitySignature & systemSignature) == systemSignature)
 			{
-				system->entities.insert(entity);
+				system->entities.push_back(entity);
 			}
 			else
 			{
-				system->entities.erase(entity);
+				std::vector<Entity>* entities = &system->entities;
+				entities->erase(std::remove(entities->begin(), entities->end(), entity), entities->end());
 			}
 		}
 	}

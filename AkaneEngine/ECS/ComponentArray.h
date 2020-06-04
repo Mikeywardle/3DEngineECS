@@ -16,13 +16,15 @@ template<typename T>
 class AKANEENGINE_API ComponentArray : public IComponentArray
 {
 public:
-	void InsertData(Entity entity, T component)
+	T& InsertData(Entity entity)
 	{
 		size_t newIndex = size;
 		entityToIndexMap[entity] = newIndex;
 		indexToEntityMap[newIndex] = entity;
-		components[newIndex] = component;
 		++size;
+		components[newIndex] = T();
+
+		return components[newIndex];
 
 	}
 

@@ -116,33 +116,39 @@ int ApplicationContext::Run()
 	game.GetFrameEvent()->AddListener(rs, &RenderingSystem::OnFrame);
 
 	Entity mesh = ecs.CreateEntity();
-	ecs.AddComponent(mesh, StaticMesh());
-	ecs.AddComponent(mesh, Transform());
+	ecs.AddComponent<StaticMesh>(mesh);
+	ecs.AddComponent<Transform>(mesh);
 
 	ecs.GetComponent<Transform>(mesh).SetPositionRotationScale(glm::vec3(8,-1,-1), glm::quat(0,90,0,0), glm::vec3(1, 1, 1));
 	ecs.GetComponent<StaticMesh>(mesh).material = ResourceManager::GetMaterial("Test");
 	ecs.GetComponent<StaticMesh>(mesh).mesh = ResourceManager::GetMesh("Cube.001");
 
 	Entity mesh2 = ecs.CreateEntity();
-	ecs.AddComponent(mesh2, StaticMesh());
-	ecs.AddComponent(mesh2, Transform());
+	ecs.AddComponent<StaticMesh>(mesh2);
+	ecs.AddComponent<Transform>(mesh2);
 
 	ecs.GetComponent<Transform>(mesh2).SetPositionRotationScale(glm::vec3(8, 1, -1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
 	ecs.GetComponent<StaticMesh>(mesh2).material = ResourceManager::GetMaterial("Test2");
 	ecs.GetComponent<StaticMesh>(mesh2).mesh = ResourceManager::GetMesh("Cube");
 
-	Entity mesh3 = ecs.CreateEntity();
-	ecs.AddComponent(mesh3, StaticMesh());
-	ecs.AddComponent(mesh3, Transform());
+	Entity mesh3;
 
-	ecs.GetComponent<Transform>(mesh3).SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
-	ecs.GetComponent<StaticMesh>(mesh3).material = ResourceManager::GetMaterial("Gradient");
-	ecs.GetComponent<StaticMesh>(mesh3).mesh = ResourceManager::GetMesh("Cube");
+	for (int i = 0; i < 100000; i++) {
+		mesh3 = ecs.CreateEntity();
+		 ecs.AddComponent<StaticMesh>(mesh3);
+		 ecs.AddComponent<Transform>(mesh3);
+
+		ecs.GetComponent<Transform>(mesh3).SetPositionRotationScale(glm::vec3(8, 1, 1), glm::quat(0, 90, 0, 0), glm::vec3(1, 1, 1));
+		ecs.GetComponent<StaticMesh>(mesh3).material = ResourceManager::GetMaterial("Gradient");
+		ecs.GetComponent<StaticMesh>(mesh3).mesh = ResourceManager::GetMesh("Cube");
+	}
+
+
 
 
 	while (!glfwWindowShouldClose(window))
 	{
-		//cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
+		cout <<"Frame:"<< 1.0f/GameTime::deltaTime << endl;
 		inputModule.PollInputs();
 		game.DoFrame(GameTime::deltaTime);
 		glfwSwapBuffers(window);
